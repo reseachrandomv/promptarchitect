@@ -177,7 +177,10 @@
     templateNameInput: $('#template-name-input'),
     helpModal: $('#help-modal'),
     toastContainer: $('#toast-container'),
-    footerYear: $('#footer-year')
+    footerYear: $('#footer-year'),
+    jumpFab: $('#btn-jump-preview'),
+    previewColumn: $('#preview-column'),
+    editor: $('#editor')
   };
 
   /* ------------------------------------------------------------------ *
@@ -242,8 +245,37 @@
       } catch (err) {
         return false;
       }
+    },
+    available() {
+      try {
+        const probe = '__promptarchitect_probe__';
+        localStorage.setItem(probe, '1');
+        localStorage.removeItem(probe);
+        return true;
+      } catch (err) {
+        return false;
+      }
     }
   };
+  let storageOk = true;
+
+  /* ------------------------------------------------------------------ *
+   * Auto-growing textareas
+   * ------------------------------------------------------------------ */
+  const AUTOSIZE_MAX = { default: 420, small: 260 };
+
+  function autosize(area) {
+    if (!area || area.tagName !== 'TEXTAREA' || !area.isConnected) return;
+    const max = area.matches('[data-constraint-input]') ? AUTOSIZE_MAX.small : AUTOSIZE_MAX.default;
+    area.style.height = 'auto';
+    const borders = area.offsetHeight - area.clientHeight;
+    const needed = area.scrollHeight + borders;
+    const height = Math.min(needed, max);
+    area.style.height = `${height}px`;
+    area.classList.toggle('is-capped', needed > max);
+  }
+
+  const autosizeAll = () => $$('textarea[data-autosize]').forEach(autosize);
 
   const formatRelative = (ts) => {
     const diff = Math.round((Date.now() - ts) / 1000);
@@ -307,9 +339,10 @@
     const row = $('[data-constraint-row]', frag);
     const input = $('[data-constraint-input]', row);
     input.id = uid('constraint');
-    input.value = value;
+    input.value = String(value).replace(/\s*\n+\s*/g, ' ');
     el.constraintsList.appendChild(frag);
     renumberConstraints();
+    autosize(input);
     if (focus) input.focus();
     return row;
   }
@@ -328,6 +361,8 @@
     outputArea.value = example.output || '';
     el.examplesList.appendChild(frag);
     renumberExamples();
+    autosize(inputArea);
+    autosize(outputArea);
     if (focus) inputArea.focus();
     return pair;
   }
@@ -402,6 +437,7 @@
     currentTemplateId = s.templateId;
     markActiveTemplate();
     refreshIcons();
+    autosizeAll();
     scheduleRender();
   }
 
@@ -720,7 +756,7 @@
       const time = new Date().toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
       setAutosave('saved', `Saved at ${time}`);
     } else {
-      setAutosave('error', 'Autosave unavailable');
+      setAutosave('error', storageOk ? 'Autosave failed: storage full' : 'Storage unavailable: not saved');
     }
     return ok;
   }
@@ -731,7 +767,8 @@
     autosaveTimer = setTimeout(saveDraftNow, AUTOSAVE_DELAY);
   }
 
-  function onEdit() {
+  function onEdit(e) {
+    if (e && e.target && e.target.matches && e.target.matches('textarea[data-autosize]')) autosize(e.target);
     scheduleRender();
     scheduleAutosave();
   }
@@ -826,8 +863,10 @@
     const data = collectState();
     delete data.templateId;
     const existing = customTemplates.find((t) => t.name.toLowerCase() === trimmed.toLowerCase());
+    if (existing && !window.confirm(`A template named "${existing.name}" already exists. Overwrite it?`)) return false;
+    const snapshot = customTemplates.map((t) => ({ ...t }));
+    const previousTemplateId = currentTemplateId;
     if (existing) {
-      if (!window.confirm(`A template named "${existing.name}" already exists. Overwrite it?`)) return false;
       existing.data = data;
       existing.savedAt = Date.now();
       currentTemplateId = existing.id;
@@ -837,7 +876,9 @@
       currentTemplateId = id;
     }
     if (!persistCustomTemplates()) {
-      toast('Could not save: browser storage is full or blocked', 'error');
+      customTemplates = snapshot;
+      currentTemplateId = previousTemplateId;
+      toast(storageOk ? 'Could not save: browser storage is full' : 'Could not save: browser storage is full or blocked', 'error');
       return false;
     }
     renderCustomTemplates();
@@ -861,9 +902,14 @@
     const tpl = customTemplates.find((t) => t.id === id);
     if (!tpl) return;
     if (!window.confirm(`Delete the template "${tpl.name}"? This cannot be undone.`)) return;
+    const snapshot = customTemplates;
     customTemplates = customTemplates.filter((t) => t.id !== id);
+    if (!persistCustomTemplates()) {
+      customTemplates = snapshot;
+      toast('Could not delete: browser storage is unavailable', 'error');
+      return;
+    }
     if (currentTemplateId === id) currentTemplateId = null;
-    persistCustomTemplates();
     renderCustomTemplates();
     saveDraftNow();
     toast(`Deleted "${tpl.name}"`, 'info');
@@ -1012,7 +1058,6 @@
     lastFocused = document.activeElement;
     closeTemplatesMenu();
     modal.classList.remove('hidden');
-    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     refreshIcons();
     const target = focusTarget || $(FOCUSABLE, modal);
@@ -1022,7 +1067,6 @@
   function closeModal(modal) {
     if (modal.classList.contains('hidden')) return;
     modal.classList.add('hidden');
-    modal.setAttribute('aria-hidden', 'true');
     if (!$$('.modal').some((m) => !m.classList.contains('hidden'))) document.body.style.overflow = '';
     if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
@@ -1134,7 +1178,7 @@
     });
     el.skillName.addEventListener('blur', () => {
       const slug = slugify(el.skillName.value);
-      if (el.skillName.value && slug !== el.skillName.value) {
+      if (slug && slug !== el.skillName.value) {
         el.skillName.value = slug;
         onEdit();
       }
@@ -1165,6 +1209,31 @@
           onEdit();
         }
       }
+    });
+    el.constraintsList.addEventListener('paste', (e) => {
+      if (!e.target.matches('[data-constraint-input]')) return;
+      const text = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+      const lines = text.split(/\r?\n/)
+        .map((l) => l.replace(/^\s*(?:[-*+•]|\d+[.)])\s+/, '').trim())
+        .filter(Boolean);
+      if (lines.length < 2) return;
+      e.preventDefault();
+      const input = e.target;
+      const before = input.value.slice(0, input.selectionStart);
+      const after = input.value.slice(input.selectionEnd);
+      input.value = `${before}${lines[0]}`.trim();
+      autosize(input);
+      let anchor = input.closest('[data-constraint-row]');
+      lines.slice(1).forEach((line, i, rest) => {
+        const row = addConstraint(i === rest.length - 1 ? `${line}${after}`.trim() : line);
+        anchor.after(row);
+        anchor = row;
+      });
+      renumberConstraints();
+      refreshIcons();
+      $('[data-constraint-input]', anchor).focus();
+      onEdit();
+      toast(`Added ${lines.length} constraints from clipboard`, 'info');
     });
     el.constraintsList.addEventListener('click', (e) => {
       const btn = e.target.closest('[data-remove-constraint]');
@@ -1276,6 +1345,34 @@
 
     document.addEventListener('keydown', onKeydown);
 
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(autosizeAll, 150);
+    });
+
+    if (el.jumpFab && el.previewColumn) {
+      const label = $('[data-jump-label]', el.jumpFab);
+      const setJump = (toEditor) => {
+        el.jumpFab.setAttribute('href', toEditor ? '#editor' : '#preview-column');
+        el.jumpFab.setAttribute('aria-label', toEditor ? 'Back to editor' : 'Jump to live preview');
+        label.textContent = toEditor ? 'Editor' : 'Preview';
+        el.jumpFab.dataset.target = toEditor ? 'editor' : 'preview';
+      };
+      setJump(false);
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => setJump(entry.isIntersecting));
+        }, { threshold: 0.15 });
+        io.observe(el.previewColumn);
+      }
+      el.jumpFab.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = el.jumpFab.dataset.target === 'editor' ? el.editor : el.previewColumn;
+        target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
+
     window.addEventListener('beforeunload', () => {
       if (autosaveTimer) saveDraftNow();
     });
@@ -1295,6 +1392,7 @@
     if (el.footerYear) el.footerYear.textContent = String(new Date().getFullYear());
     if (IS_MAC) $$('kbd[data-mod]').forEach((k) => { k.textContent = '⌘'; });
 
+    storageOk = storage.available();
     loadCustomTemplates();
     renderCustomTemplates();
 
@@ -1313,6 +1411,11 @@
     bindEvents();
     setActiveFormat(activeFormat);
     refreshIcons();
+    if (!storageOk) {
+      setAutosave('error', 'Storage unavailable: not saved');
+      toast('Browser storage is full or blocked, so drafts and templates will not be saved. Export your work before closing the tab.', 'error', 7000);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(autosizeAll);
   }
 
   if (document.readyState === 'loading') {

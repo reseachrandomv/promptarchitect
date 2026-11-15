@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PromptArchitect — Visual AI System Prompt &amp; Agent Skill Studio</title>
-  <meta name="description" content="Build structured AI system prompts and agent skills visually. Live Markdown, Anthropic-style XML and OpenAI JSON Schema output, token metrics, templates and SKILL.md export. 100% client-side." />
-  <meta name="keywords" content="prompt engineering, system prompt, agent skill, SKILL.md, Claude XML, OpenAI JSON schema, LLM tools" />
-  <meta name="author" content="Fathimath Malaak Jaufar" />
-  <meta name="theme-color" content="#0b0b14" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="PromptArchitect — Visual AI System Prompt &amp; Agent Skill Studio" />
-  <meta property="og:description" content="Design system prompts block by block and export them as Markdown, XML, JSON Schema or a ready-to-use SKILL.md. Free and open source." />
-  <meta property="og:url" content="https://reseachrandomv.github.io/promptarchitect/" />
-  <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="PromptArchitect" />
-  <meta name="twitter:description" content="Visual AI System Prompt &amp; Agent Skill Studio. 100% client-side." />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M18 46 32 16l14 30M23 36h18' stroke='white' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+  <meta name="description" content="Build structured AI system prompts and agent skills visually. Live Markdown, Anthropic-style XML and OpenAI JSON Schema output, token metrics, templates and SKILL.md export. 100% client-side.">
+  <meta name="keywords" content="prompt engineering, system prompt, agent skill, SKILL.md, Claude XML, OpenAI JSON schema, LLM tools">
+  <meta name="author" content="Fathimath Malaak Jaufar">
+  <meta name="theme-color" content="#0b0b14">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="PromptArchitect — Visual AI System Prompt &amp; Agent Skill Studio">
+  <meta property="og:description" content="Design system prompts block by block and export them as Markdown, XML, JSON Schema or a ready-to-use SKILL.md. Free and open source.">
+  <meta property="og:url" content="https://reseachrandomv.github.io/promptarchitect/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="PromptArchitect">
+  <meta name="twitter:description" content="Visual AI System Prompt &amp; Agent Skill Studio. 100% client-side.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M18 46 32 16l14 30M23 36h18' stroke='white' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -43,14 +43,14 @@
     };
   </script>
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body class="min-h-screen bg-zinc-950 font-sans text-zinc-200 antialiased">
   <div class="bg-glow" aria-hidden="true"></div>
   <a href="#editor" class="skip-link">Skip to editor</a>
 
   <!-- ===== Header ===== -->
-  <header class="glass-header sticky top-0 z-40" role="banner">
+  <header class="glass-header z-40">
     <div class="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-3 lg:px-6">
       <a href="#" class="flex items-center gap-3" aria-label="PromptArchitect home">
         <span class="logo-mark" aria-hidden="true"><i data-lucide="drafting-compass" class="h-5 w-5"></i></span>
@@ -60,15 +60,15 @@
         </span>
       </a>
 
-      <div id="autosave-status" class="autosave ml-1 hidden items-center gap-2 text-xs text-zinc-400 md:flex" role="status" aria-live="polite">
+      <div id="autosave-status" class="autosave ml-auto flex items-center gap-2 text-xs text-zinc-400 sm:ml-1" role="status" aria-live="polite">
         <span id="autosave-dot" class="autosave-dot" aria-hidden="true"></span>
-        <span id="autosave-text">All changes saved</span>
+        <span id="autosave-text" class="max-sm:sr-only">All changes saved</span>
       </div>
 
-      <nav class="ml-auto flex flex-wrap items-center gap-2" aria-label="Primary actions">
+      <nav class="header-actions" aria-label="Primary actions">
         <div class="relative">
-          <button id="btn-templates-toggle" type="button" class="btn btn-ghost" aria-haspopup="menu" aria-expanded="false" aria-controls="templates-menu">
-            <i data-lucide="layout-template" class="h-4 w-4"></i><span class="hidden sm:inline">Templates</span><i data-lucide="chevron-down" class="h-3.5 w-3.5 opacity-70"></i>
+          <button id="btn-templates-toggle" type="button" class="btn btn-ghost" aria-label="Templates" aria-haspopup="menu" aria-expanded="false" aria-controls="templates-menu">
+            <i data-lucide="layout-template" class="h-4 w-4"></i><span class="hidden sm:inline">Templates</span><i data-lucide="chevron-down" class="hidden h-3.5 w-3.5 opacity-70 sm:block"></i>
           </button>
           <div id="templates-menu" class="dropdown hidden" role="menu" aria-labelledby="btn-templates-toggle">
             <p class="dropdown-label">Built-in</p>
@@ -80,20 +80,20 @@
             <a href="#template-library" class="dropdown-item" role="menuitem"><i data-lucide="library" class="h-4 w-4"></i>Open library</a>
           </div>
         </div>
-        <button id="btn-save-template" type="button" class="btn btn-ghost" title="Save as custom template">
+        <button id="btn-save-template" type="button" class="btn btn-ghost" title="Save as custom template" aria-label="Save template">
           <i data-lucide="bookmark-plus" class="h-4 w-4"></i><span class="hidden xl:inline">Save template</span>
         </button>
-        <button id="btn-copy" type="button" class="btn btn-ghost" title="Copy active preview (Ctrl/Cmd+Shift+C)">
+        <button id="btn-copy" type="button" class="btn btn-ghost" title="Copy active preview (Ctrl/Cmd+Shift+C)" aria-label="Copy" aria-keyshortcuts="Control+Shift+C Meta+Shift+C">
           <i data-lucide="copy" class="h-4 w-4"></i><span class="hidden xl:inline">Copy</span>
         </button>
-        <button id="btn-clear" type="button" class="btn btn-danger" title="Clear workspace (Ctrl/Cmd+K)">
+        <button id="btn-clear" type="button" class="btn btn-danger" title="Clear workspace (Ctrl/Cmd+K)" aria-label="Clear" aria-keyshortcuts="Control+K Meta+K">
           <i data-lucide="eraser" class="h-4 w-4"></i><span class="hidden xl:inline">Clear</span>
         </button>
-        <button id="btn-export-json" type="button" class="btn btn-ghost" title="Download .json template">
+        <button id="btn-export-json" type="button" class="btn btn-ghost" title="Download .json template" aria-label="Export .json template" aria-keyshortcuts="Control+Shift+S Meta+Shift+S">
           <i data-lucide="file-json" class="h-4 w-4"></i><span class="hidden sm:inline">.json</span>
         </button>
-        <button id="btn-export-md" type="button" class="btn btn-primary" title="Download SKILL.md (Ctrl/Cmd+S)">
-          <i data-lucide="download" class="h-4 w-4"></i><span>SKILL.md</span>
+        <button id="btn-export-md" type="button" class="btn btn-primary" title="Download SKILL.md (Ctrl/Cmd+S)" aria-label="Export SKILL.md" aria-keyshortcuts="Control+S Meta+S">
+          <i data-lucide="download" class="h-4 w-4"></i><span class="hidden sm:inline">SKILL.md</span>
         </button>
         <button id="btn-help" type="button" class="btn btn-icon" aria-label="Keyboard shortcuts" aria-haspopup="dialog" aria-controls="help-modal">
           <i data-lucide="keyboard" class="h-4 w-4"></i>
@@ -119,12 +119,12 @@
           <div class="grid gap-4 sm:grid-cols-2">
             <div>
               <label for="skill-name" class="field-label">Skill name</label>
-              <input id="skill-name" name="skill-name" type="text" class="field" placeholder="e.g. code-reviewer" autocomplete="off" spellcheck="false" maxlength="64" aria-describedby="skill-name-help" />
+              <input id="skill-name" name="skill-name" type="text" class="field" placeholder="e.g. code-reviewer" autocomplete="off" spellcheck="false" maxlength="64" aria-describedby="skill-name-help">
               <p id="skill-name-help" class="field-help">Lowercase, hyphenated identifier.</p>
             </div>
             <div>
               <label for="skill-description" class="field-label">Description</label>
-              <input id="skill-description" name="skill-description" type="text" class="field" placeholder="When and why an agent should use this skill" autocomplete="off" maxlength="300" />
+              <input id="skill-description" name="skill-description" type="text" class="field" placeholder="When and why an agent should use this skill" autocomplete="off" maxlength="300">
             </div>
           </div>
         </article>
@@ -135,7 +135,7 @@
             <h2 id="role-heading" class="card-title">Role / Persona</h2>
           </header>
           <label for="role-input" class="sr-only">Role or persona</label>
-          <textarea id="role-input" class="field field-area" rows="3" placeholder="You are a senior software engineer who..."></textarea>
+          <textarea id="role-input" class="field field-area" data-autosize rows="3" placeholder="You are a senior software engineer who..."></textarea>
         </article>
 
         <article class="glass-card block-fade" aria-labelledby="context-heading">
@@ -144,7 +144,7 @@
             <h2 id="context-heading" class="card-title">Context</h2>
           </header>
           <label for="context-input" class="sr-only">Context</label>
-          <textarea id="context-input" class="field field-area" rows="4" placeholder="Background, audience, domain knowledge, environment..."></textarea>
+          <textarea id="context-input" class="field field-area" data-autosize rows="4" placeholder="Background, audience, domain knowledge, environment..."></textarea>
         </article>
 
         <article class="glass-card block-fade" aria-labelledby="constraints-heading">
@@ -153,7 +153,7 @@
             <h2 id="constraints-heading" class="card-title">Constraints</h2>
             <span id="constraints-count" class="badge ml-auto">0</span>
           </header>
-          <ol id="constraints-list" class="space-y-2" aria-label="Constraint rules"></ol>
+          <ol id="constraints-list" class="space-y-2" aria-labelledby="constraints-heading"></ol>
           <button id="btn-add-constraint" type="button" class="btn btn-add mt-3">
             <i data-lucide="plus" class="h-4 w-4"></i>Add constraint
           </button>
@@ -165,7 +165,7 @@
             <h2 id="format-heading" class="card-title">Output Format</h2>
           </header>
           <label for="output-format-input" class="sr-only">Output format</label>
-          <textarea id="output-format-input" class="field field-area" rows="3" placeholder="Respond in Markdown with sections: Summary, Details, Next steps..."></textarea>
+          <textarea id="output-format-input" class="field field-area" data-autosize rows="3" placeholder="Respond in Markdown with sections: Summary, Details, Next steps..."></textarea>
         </article>
 
         <article class="glass-card block-fade" aria-labelledby="examples-heading">
@@ -174,7 +174,7 @@
             <h2 id="examples-heading" class="card-title">Few-Shot Examples</h2>
             <span id="examples-count" class="badge ml-auto">0</span>
           </header>
-          <div id="examples-list" class="space-y-3" aria-label="Example input and output pairs"></div>
+          <div id="examples-list" class="space-y-3" role="group" aria-labelledby="examples-heading"></div>
           <button id="btn-add-example" type="button" class="btn btn-add mt-3">
             <i data-lucide="plus" class="h-4 w-4"></i>Add example
           </button>
@@ -187,15 +187,15 @@
           <section id="metrics-bar" class="glass-card metrics" aria-label="Prompt metrics">
             <div class="metric">
               <span class="metric-label"><i data-lucide="type" class="h-3.5 w-3.5"></i>Words</span>
-              <output id="metric-words" class="metric-value" aria-live="polite">0</output>
+              <output id="metric-words" class="metric-value" aria-live="off">0</output>
             </div>
             <div class="metric">
               <span class="metric-label"><i data-lucide="hash" class="h-3.5 w-3.5"></i>Characters</span>
-              <output id="metric-chars" class="metric-value" aria-live="polite">0</output>
+              <output id="metric-chars" class="metric-value" aria-live="off">0</output>
             </div>
             <div class="metric">
               <span class="metric-label"><i data-lucide="cpu" class="h-3.5 w-3.5"></i>Est. tokens</span>
-              <output id="metric-tokens" class="metric-value text-gradient" aria-live="polite">0</output>
+              <output id="metric-tokens" class="metric-value text-gradient" aria-live="off">0</output>
             </div>
             <div class="metric-bar col-span-3" aria-hidden="true"><span id="metric-token-bar"></span></div>
           </section>
@@ -261,18 +261,19 @@
         <p id="custom-templates-empty" class="empty-state">No custom templates yet. Click <strong>Save template</strong> to store the current prompt in your browser.</p>
       </div>
     </section>
+  <a id="btn-jump-preview" href="#preview-column" class="jump-fab lg:hidden" aria-label="Jump to live preview"><i data-lucide="eye" class="h-4 w-4" data-jump-icon></i><span data-jump-label>Preview</span></a>
   </main>
 
-  <footer class="mt-12 border-t border-white/5 py-6 text-center text-sm text-zinc-500" role="contentinfo">
+  <footer class="mt-12 border-t border-white/5 px-4 py-6 pb-24 text-center text-sm text-zinc-400 lg:pb-6">
     <p>&copy; <span id="footer-year">2026</span> PromptArchitect &middot; Released under the <a class="link" href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a> &middot; <a class="link" href="https://github.com/reseachrandomv/promptarchitect" target="_blank" rel="noopener">View on GitHub</a></p>
-    <p class="mt-1 text-xs">Runs 100% in your browser. Nothing you type leaves your device.</p>
+    <p class="mt-1 text-xs text-zinc-400">Runs 100% in your browser. Nothing you type leaves your device.</p>
   </footer>
 
   <!-- ===== Row templates (cloned by app.js) ===== -->
   <template id="tpl-constraint-row">
     <li class="constraint-row block-fade" data-constraint-row>
       <span class="row-index" data-row-index>1</span>
-      <input type="text" class="field" data-constraint-input aria-label="Constraint" placeholder="e.g. Never invent APIs that do not exist" />
+      <textarea class="field field-area constraint-field" rows="1" data-constraint-input data-autosize aria-label="Constraint" placeholder="e.g. Never invent APIs that do not exist"></textarea>
       <button type="button" class="btn btn-icon btn-remove" data-remove-constraint aria-label="Remove constraint"><i data-lucide="x" class="h-4 w-4"></i></button>
     </li>
   </template>
@@ -284,9 +285,9 @@
         <button type="button" class="btn btn-icon btn-remove" data-remove-example aria-label="Remove example"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
       </div>
       <label class="field-label" data-example-input-label>User input</label>
-      <textarea class="field field-area" rows="2" data-example-input placeholder="What the user says"></textarea>
+      <textarea class="field field-area" rows="2" data-example-input data-autosize placeholder="What the user says"></textarea>
       <label class="field-label mt-2" data-example-output-label>Ideal output</label>
-      <textarea class="field field-area" rows="3" data-example-output placeholder="How the assistant should respond"></textarea>
+      <textarea class="field field-area" rows="3" data-example-output data-autosize placeholder="How the assistant should respond"></textarea>
     </div>
   </template>
 
@@ -302,12 +303,12 @@
   </template>
 
   <!-- ===== Save Template Modal ===== -->
-  <div id="save-template-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="save-template-title" aria-hidden="true">
+  <div id="save-template-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="save-template-title">
     <div class="modal-backdrop" data-close-modal></div>
     <form id="save-template-form" class="modal-card glass-card" novalidate>
       <h2 id="save-template-title" class="text-lg font-semibold text-white">Save as custom template</h2>
       <label for="template-name-input" class="field-label mt-4">Template name</label>
-      <input id="template-name-input" type="text" class="field" maxlength="60" required placeholder="My research agent" />
+      <input id="template-name-input" type="text" class="field" maxlength="60" required placeholder="My research agent">
       <div class="mt-5 flex justify-end gap-2">
         <button id="btn-save-template-cancel" type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
         <button id="btn-save-template-confirm" type="submit" class="btn btn-primary"><i data-lucide="save" class="h-4 w-4"></i>Save</button>
@@ -316,7 +317,7 @@
   </div>
 
   <!-- ===== Help Modal ===== -->
-  <div id="help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-hidden="true">
+  <div id="help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="help-title">
     <div class="modal-backdrop" data-close-modal></div>
     <div class="modal-card glass-card">
       <div class="flex items-center justify-between">
