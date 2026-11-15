@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PromptArchitect — Visual AI System Prompt &amp; Agent Skill Studio</title>
+  <meta name="description" content="Build structured AI system prompts and agent skills visually. Live Markdown, Anthropic-style XML and OpenAI JSON Schema output, token metrics, templates and SKILL.md export. 100% client-side." />
+  <meta name="keywords" content="prompt engineering, system prompt, agent skill, SKILL.md, Claude XML, OpenAI JSON schema, LLM tools" />
+  <meta name="author" content="Fathimath Malaak Jaufar" />
+  <meta name="theme-color" content="#0b0b14" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PromptArchitect — Visual AI System Prompt &amp; Agent Skill Studio" />
+  <meta property="og:description" content="Design system prompts block by block and export them as Markdown, XML, JSON Schema or a ready-to-use SKILL.md. Free and open source." />
+  <meta property="og:url" content="https://reseachrandomv.github.io/promptarchitect/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="PromptArchitect" />
+  <meta name="twitter:description" content="Visual AI System Prompt &amp; Agent Skill Studio. 100% client-side." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Cpath d='M18 46 32 16l14 30M23 36h18' stroke='white' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace']
+          },
+          colors: {
+            brand: { 400: '#818cf8', 500: '#6366f1', 600: '#4f46e5' },
+            accent: { 400: '#a78bfa', 500: '#8b5cf6', 600: '#7c3aed' }
+          },
+          boxShadow: {
+            glow: '0 0 0 1px rgba(129,140,248,.25), 0 10px 40px -10px rgba(99,102,241,.45)'
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="min-h-screen bg-zinc-950 font-sans text-zinc-200 antialiased">
+  <div class="bg-glow" aria-hidden="true"></div>
+  <a href="#editor" class="skip-link">Skip to editor</a>
+
+  <!-- ===== Header ===== -->
+  <header class="glass-header sticky top-0 z-40" role="banner">
+    <div class="mx-auto flex max-w-[1600px] flex-wrap items-center gap-3 px-4 py-3 lg:px-6">
+      <a href="#" class="flex items-center gap-3" aria-label="PromptArchitect home">
+        <span class="logo-mark" aria-hidden="true"><i data-lucide="drafting-compass" class="h-5 w-5"></i></span>
+        <span class="leading-tight">
+          <span class="block text-base font-bold tracking-tight text-white">Prompt<span class="text-gradient">Architect</span></span>
+          <span class="hidden text-xs text-zinc-400 sm:block">Visual AI System Prompt &amp; Agent Skill Studio</span>
+        </span>
+      </a>
+
+      <div id="autosave-status" class="autosave ml-1 hidden items-center gap-2 text-xs text-zinc-400 md:flex" role="status" aria-live="polite">
+        <span id="autosave-dot" class="autosave-dot" aria-hidden="true"></span>
+        <span id="autosave-text">All changes saved</span>
+      </div>
+
+      <nav class="ml-auto flex flex-wrap items-center gap-2" aria-label="Primary actions">
+        <div class="relative">
+          <button id="btn-templates-toggle" type="button" class="btn btn-ghost" aria-haspopup="menu" aria-expanded="false" aria-controls="templates-menu">
+            <i data-lucide="layout-template" class="h-4 w-4"></i><span class="hidden sm:inline">Templates</span><i data-lucide="chevron-down" class="h-3.5 w-3.5 opacity-70"></i>
+          </button>
+          <div id="templates-menu" class="dropdown hidden" role="menu" aria-labelledby="btn-templates-toggle">
+            <p class="dropdown-label">Built-in</p>
+            <button type="button" class="dropdown-item" role="menuitem" data-template="coding-assistant"><i data-lucide="code-2" class="h-4 w-4"></i>Coding Assistant</button>
+            <button type="button" class="dropdown-item" role="menuitem" data-template="cybersecurity-analyst"><i data-lucide="shield-check" class="h-4 w-4"></i>Cybersecurity Analyst</button>
+            <button type="button" class="dropdown-item" role="menuitem" data-template="social-media-strategist"><i data-lucide="megaphone" class="h-4 w-4"></i>Social Media Strategist</button>
+            <button type="button" class="dropdown-item" role="menuitem" data-template="technical-writer"><i data-lucide="book-open-text" class="h-4 w-4"></i>Technical Writer</button>
+            <div class="dropdown-sep" role="separator"></div>
+            <a href="#template-library" class="dropdown-item" role="menuitem"><i data-lucide="library" class="h-4 w-4"></i>Open library</a>
+          </div>
+        </div>
+        <button id="btn-save-template" type="button" class="btn btn-ghost" title="Save as custom template">
+          <i data-lucide="bookmark-plus" class="h-4 w-4"></i><span class="hidden xl:inline">Save template</span>
+        </button>
+        <button id="btn-copy" type="button" class="btn btn-ghost" title="Copy active preview (Ctrl/Cmd+Shift+C)">
+          <i data-lucide="copy" class="h-4 w-4"></i><span class="hidden xl:inline">Copy</span>
+        </button>
+        <button id="btn-clear" type="button" class="btn btn-danger" title="Clear workspace (Ctrl/Cmd+K)">
+          <i data-lucide="eraser" class="h-4 w-4"></i><span class="hidden xl:inline">Clear</span>
+        </button>
+        <button id="btn-export-json" type="button" class="btn btn-ghost" title="Download .json template">
+          <i data-lucide="file-json" class="h-4 w-4"></i><span class="hidden sm:inline">.json</span>
+        </button>
+        <button id="btn-export-md" type="button" class="btn btn-primary" title="Download SKILL.md (Ctrl/Cmd+S)">
+          <i data-lucide="download" class="h-4 w-4"></i><span>SKILL.md</span>
+        </button>
+        <button id="btn-help" type="button" class="btn btn-icon" aria-label="Keyboard shortcuts" aria-haspopup="dialog" aria-controls="help-modal">
+          <i data-lucide="keyboard" class="h-4 w-4"></i>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Workspace ===== -->
+  <main id="main" class="mx-auto max-w-[1600px] px-4 py-6 lg:px-6">
+    <div class="workspace grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+
+      <!-- Left: Editor -->
+      <section id="editor" class="space-y-5" aria-labelledby="editor-heading">
+        <h1 id="editor-heading" class="sr-only">Prompt editor</h1>
+
+        <article class="glass-card block-fade" aria-labelledby="meta-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="tag" class="h-4 w-4"></i></span>
+            <h2 id="meta-heading" class="card-title">Skill Metadata</h2>
+            <span class="card-hint">Used in SKILL.md frontmatter</span>
+          </header>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label for="skill-name" class="field-label">Skill name</label>
+              <input id="skill-name" name="skill-name" type="text" class="field" placeholder="e.g. code-reviewer" autocomplete="off" spellcheck="false" maxlength="64" aria-describedby="skill-name-help" />
+              <p id="skill-name-help" class="field-help">Lowercase, hyphenated identifier.</p>
+            </div>
+            <div>
+              <label for="skill-description" class="field-label">Description</label>
+              <input id="skill-description" name="skill-description" type="text" class="field" placeholder="When and why an agent should use this skill" autocomplete="off" maxlength="300" />
+            </div>
+          </div>
+        </article>
+
+        <article class="glass-card block-fade" aria-labelledby="role-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="user-cog" class="h-4 w-4"></i></span>
+            <h2 id="role-heading" class="card-title">Role / Persona</h2>
+          </header>
+          <label for="role-input" class="sr-only">Role or persona</label>
+          <textarea id="role-input" class="field field-area" rows="3" placeholder="You are a senior software engineer who..."></textarea>
+        </article>
+
+        <article class="glass-card block-fade" aria-labelledby="context-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="layers" class="h-4 w-4"></i></span>
+            <h2 id="context-heading" class="card-title">Context</h2>
+          </header>
+          <label for="context-input" class="sr-only">Context</label>
+          <textarea id="context-input" class="field field-area" rows="4" placeholder="Background, audience, domain knowledge, environment..."></textarea>
+        </article>
+
+        <article class="glass-card block-fade" aria-labelledby="constraints-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="list-checks" class="h-4 w-4"></i></span>
+            <h2 id="constraints-heading" class="card-title">Constraints</h2>
+            <span id="constraints-count" class="badge ml-auto">0</span>
+          </header>
+          <ol id="constraints-list" class="space-y-2" aria-label="Constraint rules"></ol>
+          <button id="btn-add-constraint" type="button" class="btn btn-add mt-3">
+            <i data-lucide="plus" class="h-4 w-4"></i>Add constraint
+          </button>
+        </article>
+
+        <article class="glass-card block-fade" aria-labelledby="format-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="file-type-2" class="h-4 w-4"></i></span>
+            <h2 id="format-heading" class="card-title">Output Format</h2>
+          </header>
+          <label for="output-format-input" class="sr-only">Output format</label>
+          <textarea id="output-format-input" class="field field-area" rows="3" placeholder="Respond in Markdown with sections: Summary, Details, Next steps..."></textarea>
+        </article>
+
+        <article class="glass-card block-fade" aria-labelledby="examples-heading">
+          <header class="card-head">
+            <span class="card-icon"><i data-lucide="messages-square" class="h-4 w-4"></i></span>
+            <h2 id="examples-heading" class="card-title">Few-Shot Examples</h2>
+            <span id="examples-count" class="badge ml-auto">0</span>
+          </header>
+          <div id="examples-list" class="space-y-3" aria-label="Example input and output pairs"></div>
+          <button id="btn-add-example" type="button" class="btn btn-add mt-3">
+            <i data-lucide="plus" class="h-4 w-4"></i>Add example
+          </button>
+        </article>
+      </section>
+
+      <!-- Right: Preview -->
+      <aside id="preview-column" class="preview-column" aria-labelledby="preview-heading">
+        <div class="preview-sticky space-y-4">
+          <section id="metrics-bar" class="glass-card metrics" aria-label="Prompt metrics">
+            <div class="metric">
+              <span class="metric-label"><i data-lucide="type" class="h-3.5 w-3.5"></i>Words</span>
+              <output id="metric-words" class="metric-value" aria-live="polite">0</output>
+            </div>
+            <div class="metric">
+              <span class="metric-label"><i data-lucide="hash" class="h-3.5 w-3.5"></i>Characters</span>
+              <output id="metric-chars" class="metric-value" aria-live="polite">0</output>
+            </div>
+            <div class="metric">
+              <span class="metric-label"><i data-lucide="cpu" class="h-3.5 w-3.5"></i>Est. tokens</span>
+              <output id="metric-tokens" class="metric-value text-gradient" aria-live="polite">0</output>
+            </div>
+            <div class="metric-bar col-span-3" aria-hidden="true"><span id="metric-token-bar"></span></div>
+          </section>
+
+          <section class="glass-card p-0 overflow-hidden" aria-labelledby="preview-heading">
+            <div class="preview-toolbar">
+              <h2 id="preview-heading" class="sr-only">Live preview</h2>
+              <div class="tabs" role="tablist" aria-label="Output format">
+                <button id="tab-markdown" type="button" class="tab is-active" role="tab" aria-selected="true" aria-controls="preview-panel" data-format="markdown"><i data-lucide="file-text" class="h-3.5 w-3.5"></i>Markdown</button>
+                <button id="tab-xml" type="button" class="tab" role="tab" aria-selected="false" aria-controls="preview-panel" data-format="xml" tabindex="-1"><i data-lucide="code-xml" class="h-3.5 w-3.5"></i>XML</button>
+                <button id="tab-json" type="button" class="tab" role="tab" aria-selected="false" aria-controls="preview-panel" data-format="json" tabindex="-1"><i data-lucide="braces" class="h-3.5 w-3.5"></i>JSON Schema</button>
+              </div>
+              <button id="btn-copy-preview" type="button" class="btn btn-icon ml-auto" aria-label="Copy preview to clipboard" title="Copy">
+                <i data-lucide="clipboard-copy" class="h-4 w-4"></i>
+              </button>
+            </div>
+            <div id="preview-panel" class="preview-panel" role="tabpanel" aria-labelledby="tab-markdown" tabindex="0">
+              <pre class="preview-pre"><code id="preview-code" class="preview-code"></code></pre>
+            </div>
+            <div class="preview-foot">
+              <span id="preview-format-label">Clean Markdown</span>
+              <span id="preview-line-count">0 lines</span>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ===== Template Library ===== -->
+    <section id="template-library" class="mt-10 scroll-mt-24" aria-labelledby="library-heading">
+      <div class="mb-4 flex items-end justify-between gap-4">
+        <div>
+          <h2 id="library-heading" class="text-xl font-bold text-white">Template Library</h2>
+          <p class="text-sm text-zinc-400">Start from a proven structure, then make it yours.</p>
+        </div>
+      </div>
+      <div id="builtin-templates" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <button type="button" class="template-card" data-template="coding-assistant">
+          <span class="template-icon"><i data-lucide="code-2" class="h-5 w-5"></i></span>
+          <span class="template-title">Coding Assistant</span>
+          <span class="template-desc">Senior engineer that writes, reviews and debugs production code.</span>
+        </button>
+        <button type="button" class="template-card" data-template="cybersecurity-analyst">
+          <span class="template-icon"><i data-lucide="shield-check" class="h-5 w-5"></i></span>
+          <span class="template-title">Cybersecurity Analyst</span>
+          <span class="template-desc">Threat triage, log analysis and remediation guidance.</span>
+        </button>
+        <button type="button" class="template-card" data-template="social-media-strategist">
+          <span class="template-icon"><i data-lucide="megaphone" class="h-5 w-5"></i></span>
+          <span class="template-title">Social Media Content Strategist</span>
+          <span class="template-desc">Platform-native hooks, calendars and campaign copy.</span>
+        </button>
+        <button type="button" class="template-card" data-template="technical-writer">
+          <span class="template-icon"><i data-lucide="book-open-text" class="h-5 w-5"></i></span>
+          <span class="template-title">Technical Writer</span>
+          <span class="template-desc">Clear docs, READMEs, API references and tutorials.</span>
+        </button>
+      </div>
+
+      <div class="mt-8">
+        <h3 class="mb-3 flex items-center gap-2 text-base font-semibold text-white"><i data-lucide="bookmark" class="h-4 w-4 text-indigo-400"></i>My Templates</h3>
+        <div id="custom-templates" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-live="polite"></div>
+        <p id="custom-templates-empty" class="empty-state">No custom templates yet. Click <strong>Save template</strong> to store the current prompt in your browser.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-12 border-t border-white/5 py-6 text-center text-sm text-zinc-500" role="contentinfo">
+    <p>&copy; <span id="footer-year">2026</span> PromptArchitect &middot; Released under the <a class="link" href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a> &middot; <a class="link" href="https://github.com/reseachrandomv/promptarchitect" target="_blank" rel="noopener">View on GitHub</a></p>
+    <p class="mt-1 text-xs">Runs 100% in your browser. Nothing you type leaves your device.</p>
+  </footer>
+
+  <!-- ===== Row templates (cloned by app.js) ===== -->
+  <template id="tpl-constraint-row">
+    <li class="constraint-row block-fade" data-constraint-row>
+      <span class="row-index" data-row-index>1</span>
+      <input type="text" class="field" data-constraint-input aria-label="Constraint" placeholder="e.g. Never invent APIs that do not exist" />
+      <button type="button" class="btn btn-icon btn-remove" data-remove-constraint aria-label="Remove constraint"><i data-lucide="x" class="h-4 w-4"></i></button>
+    </li>
+  </template>
+
+  <template id="tpl-example-pair">
+    <div class="example-pair block-fade" data-example-pair>
+      <div class="example-head">
+        <span class="example-title">Example <span data-example-index>1</span></span>
+        <button type="button" class="btn btn-icon btn-remove" data-remove-example aria-label="Remove example"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+      </div>
+      <label class="field-label" data-example-input-label>User input</label>
+      <textarea class="field field-area" rows="2" data-example-input placeholder="What the user says"></textarea>
+      <label class="field-label mt-2" data-example-output-label>Ideal output</label>
+      <textarea class="field field-area" rows="3" data-example-output placeholder="How the assistant should respond"></textarea>
+    </div>
+  </template>
+
+  <template id="tpl-custom-template-card">
+    <div class="template-card template-card--custom" data-custom-template-card>
+      <button type="button" class="template-load" data-load-custom>
+        <span class="template-icon"><i data-lucide="bookmark" class="h-5 w-5"></i></span>
+        <span class="template-title" data-custom-name>Untitled</span>
+        <span class="template-desc" data-custom-meta>Saved just now</span>
+      </button>
+      <button type="button" class="btn btn-icon btn-remove template-delete" data-delete-custom aria-label="Delete template"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+    </div>
+  </template>
+
+  <!-- ===== Save Template Modal ===== -->
+  <div id="save-template-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="save-template-title" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <form id="save-template-form" class="modal-card glass-card" novalidate>
+      <h2 id="save-template-title" class="text-lg font-semibold text-white">Save as custom template</h2>
+      <label for="template-name-input" class="field-label mt-4">Template name</label>
+      <input id="template-name-input" type="text" class="field" maxlength="60" required placeholder="My research agent" />
+      <div class="mt-5 flex justify-end gap-2">
+        <button id="btn-save-template-cancel" type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button id="btn-save-template-confirm" type="submit" class="btn btn-primary"><i data-lucide="save" class="h-4 w-4"></i>Save</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===== Help Modal ===== -->
+  <div id="help-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="help-title" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card glass-card">
+      <div class="flex items-center justify-between">
+        <h2 id="help-title" class="text-lg font-semibold text-white">Keyboard shortcuts</h2>
+        <button id="btn-help-close" type="button" class="btn btn-icon" aria-label="Close" data-close-modal><i data-lucide="x" class="h-4 w-4"></i></button>
+      </div>
+      <dl class="shortcut-list mt-4">
+        <div><dt><kbd data-mod>Ctrl</kbd> + <kbd>S</kbd></dt><dd>Export SKILL.md</dd></div>
+        <div><dt><kbd data-mod>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></dt><dd>Export .json template</dd></div>
+        <div><dt><kbd data-mod>Ctrl</kbd> + <kbd>K</kbd></dt><dd>Clear workspace</dd></div>
+        <div><dt><kbd data-mod>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></dt><dd>Copy active preview</dd></div>
+        <div><dt><kbd data-mod>Ctrl</kbd> + <kbd>1</kbd>/<kbd>2</kbd>/<kbd>3</kbd></dt><dd>Switch preview tab</dd></div>
+        <div><dt><kbd>?</kbd></dt><dd>Show this help</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>Close dialogs</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container" role="status" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
