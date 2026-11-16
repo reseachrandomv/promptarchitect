@@ -648,11 +648,34 @@
   /* ------------------------------------------------------------------ *
    * Metrics
    * ------------------------------------------------------------------ */
+  function estimateTokens(text) {
+    // Tokenizers split letters, digits and punctuation into different chunks.
+    const chunks = /([\p{L}\p{M}]+)|(\p{N}+)|([\r\n]+)|([^\S\r\n]+)|([^\s\p{L}\p{M}\p{N}]+)/gu;
+    const cjk = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/gu;
+    let tokens = 0;
+    for (const [chunk, letters, digits, lineBreaks, spaces] of text.matchAll(chunks)) {
+      if (letters) {
+        const cjkCount = letters.match(cjk)?.length || 0;
+        const other = [...(cjkCount ? letters.replace(cjk, '') : letters)].length;
+        tokens += cjkCount * 0.75 + (other ? Math.max(1, other / 7) : 0);
+      } else if (digits) {
+        tokens += Math.ceil([...digits].length / 3);
+      } else if (lineBreaks) {
+        tokens += lineBreaks.length / 4;
+      } else if (spaces) {
+        // A single separator typically joins the next word or symbol.
+        tokens += spaces.length > 1 ? Math.ceil(spaces.length / 32) : 0;
+      } else {
+        tokens += Math.max(1, [...chunk].length / 3);
+      }
+    }
+    return text ? Math.max(1, Math.round(tokens)) : 0;
+  }
+
   function computeMetrics(text) {
     const chars = text.length;
     const words = (text.match(/\S+/g) || []).length;
-    const tokens = chars === 0 ? 0 : Math.max(1, Math.round(((chars / 4) + (words * 1.33)) / 2));
-    return { chars, words, tokens };
+    return { chars, words, tokens: estimateTokens(text) };
   }
 
   function setMetric(node, value) {
