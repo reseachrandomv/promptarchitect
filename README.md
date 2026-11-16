@@ -63,6 +63,8 @@ PromptArchitect gives you a **visual, modular editor** with a **live multi-forma
 | 🌗 | **Glassmorphism UI** | Dark slate/zinc design, translucent cards, indigo/violet accents, responsive split-screen, reduced-motion support. |
 | ♿ | **Accessible** | Semantic HTML, ARIA tabs, focus-trapped dialogs, visible focus rings, live regions. |
 
+**Est. tokens** is a browser-only estimate based on words, digits, punctuation, whitespace runs and CJK characters in the active preview. Exact counts vary by model and tokenizer.
+
 ## ⌨️ Keyboard shortcuts
 
 | Shortcut | Action |
