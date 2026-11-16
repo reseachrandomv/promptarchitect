@@ -18,6 +18,17 @@
 
 </div>
 
+<p align="center">
+  <a href="https://reseachrandomv.github.io/promptarchitect/">
+    <img src="assets/screenshot-desktop.webp" alt="PromptArchitect desktop screenshot" width="900">
+  </a>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot-phone.webp" alt="PromptArchitect on a phone (390 px)" width="240"><br>
+  <sub>Fully responsive: the same app on a 390 px phone</sub>
+</p>
+
 ---
 
 ## 😩 The problem
