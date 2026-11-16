@@ -29,6 +29,10 @@
   <sub>Fully responsive: the same app on a 390 px phone</sub>
 </p>
 
+<p align="center">
+  ⭐ <b>If PromptArchitect saves you time, please <a href="https://github.com/reseachrandomv/promptarchitect">star the repo</a>.</b> It's free, takes one click, and helps other people find it.
+</p>
+
 ---
 
 ## 😩 The problem
@@ -164,13 +168,14 @@ Everything runs **100% client-side**. Your prompts are stored only in your brows
 
 ## 🤝 Contributing
 
-Contributions are welcome! Ideas: more templates, import from `.json`, prompt linting, share-by-URL.
+Contributions of all sizes are welcome: bug reports, ideas, docs, translations and code. New built-in templates, output formats and translations are especially valuable.
 
-1. Fork the repo and create a branch: `git checkout -b feature/amazing-idea`
-2. Commit your changes: `git commit -m "Add amazing idea"`
-3. Push and open a Pull Request.
+- 🟢 **New here?** Pick a [`good first issue`](https://github.com/reseachrandomv/promptarchitect/labels/good%20first%20issue) or something marked [`help wanted`](https://github.com/reseachrandomv/promptarchitect/labels/help%20wanted).
+- 💬 **Have a question or idea?** Start a thread in [Discussions](https://github.com/reseachrandomv/promptarchitect/discussions).
+- 🐛 **Found a bug?** Use the [bug report form](https://github.com/reseachrandomv/promptarchitect/issues/new/choose).
+- 🔒 **Security issue?** Report it privately: see [SECURITY.md](SECURITY.md).
 
-If PromptArchitect saves you time, please ⭐ **star the repo**. It helps others find it.
+Read the [contributing guide](CONTRIBUTING.md) for the project principles, file layout and PR checklist. Everyone taking part follows our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## 📄 License
 

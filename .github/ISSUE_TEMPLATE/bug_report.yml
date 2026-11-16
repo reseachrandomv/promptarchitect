@@ -1,0 +1,62 @@
+name: 🐛 Bug report
+description: Something isn't working as expected
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please **never paste real secrets, API keys or private data**; use fake samples.
+        Security issues should be reported privately: see [SECURITY.md](https://github.com/reseachrandomv/promptarchitect/blob/main/SECURITY.md).
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Prompt builder
+        - Live preview / compiler
+        - Exports (SKILL.md / JSON)
+        - Templates
+        - Metrics bar
+        - Local persistence
+        - Layout / styling
+        - Accessibility
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the bug.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: e.g. Chrome 131 on Windows 11, Safari on iOS 18
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Console errors (optional)
+      description: Open DevTools → Console and paste any red errors.
+      render: text
