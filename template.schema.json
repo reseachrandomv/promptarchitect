@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reseachrandomv.github.io/promptarchitect/template.schema.json",
+  "title": "PromptArchitect template",
+  "description": "JSON export produced by PromptArchitect (format promptarchitect-template, version 1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "format",
+    "version",
+    "exportedAt",
+    "name",
+    "description",
+    "prompt",
+    "compiled",
+    "openai"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "format": {
+      "const": "promptarchitect-template"
+    },
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "name": {
+      "type": "string",
+      "description": "Slug of the prompt or skill."
+    },
+    "description": {
+      "type": "string"
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "context", "constraints", "outputFormat", "examples"],
+      "properties": {
+        "role": { "type": "string" },
+        "context": { "type": "string" },
+        "constraints": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "outputFormat": { "type": "string" },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["input", "output"],
+            "properties": {
+              "input": { "type": "string" },
+              "output": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "compiled": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["markdown", "xml"],
+      "properties": {
+        "markdown": { "type": "string" },
+        "xml": { "type": "string" }
+      }
+    },
+    "openai": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "instructions", "response_format"],
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "instructions": { "type": "string" },
+        "response_format": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type", "json_schema"],
+          "properties": {
+            "type": { "const": "json_schema" },
+            "json_schema": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["name", "description", "strict", "schema"],
+              "properties": {
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "strict": { "type": "boolean" },
+                "schema": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
